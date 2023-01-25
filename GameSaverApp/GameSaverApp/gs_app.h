@@ -16,6 +16,7 @@ namespace md
 
 	private:
 		GSWindow gsWindow{WIDTH, HEIGHT, "Game Saver"};
+		GSPipeline gsPipeline{ "Shaders/VertexShader.spv", "Shaders/PixelShader.spv" };
 
 	};
 }
