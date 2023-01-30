@@ -3,6 +3,11 @@
 #include "gs_window.h"
 #include "gs_pipeline.h"
 #include "gs_device.h"
+#include "gs_swap_chain.h"
+
+// std
+#include <memory>
+#include <vector>
 
 namespace md
 {
@@ -12,12 +17,26 @@ namespace md
 	public:
 		static constexpr int WIDTH = 800;
 		static constexpr int HEIGHT = 600;
-		
+
+		GSApp();
+		~GSApp();
+
+		GSApp(const GSApp&) = delete;
+		GSApp& operator=(const GSApp&) = delete;
+
 		void run();
 
 	private:
-		GSWindow gsWindow{WIDTH, HEIGHT, "Game Saver"};
+		void createPipelineLayout();
+		void createPipeline();
+		void createCommandBuffers();
+		void drawFrame();
+
+		GSWindow gsWindow{ WIDTH, HEIGHT, "Game Saver" };
 		GSDevice gsDevice{ gsWindow };
-		GSPipeline gsPipeline{gsDevice, "Shaders/VertexShader.spv", "Shaders/PixelShader.spv", GSPipeline::defaultPipelineConfigInfo(WIDTH, HEIGHT)};
+		GSSwapChain gsSwapChain{ gsDevice, gsWindow.getExtent() };
+		std::unique_ptr<GSPipeline> gsPipeline;
+		VkPipelineLayout pipelineLayout;
+		std::vector<VkCommandBuffer> commandBuffers;
 	};
 }
