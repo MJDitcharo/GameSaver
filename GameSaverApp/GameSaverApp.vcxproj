@@ -104,13 +104,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\VulkanSDK\1.3.236.0\Include;D:\Visual Studio 2022 Projects\GameSaver\GameSaverApp\GameSaverApp\Libraries\glm-0.9.9.8\glm;D:\Visual Studio 2022 Projects\GameSaver\GameSaverApp\GameSaverApp\Libraries\glfw-3.3.8.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\VulkanSDK\1.3.236.0\Include;D:\Visual Studio 2022 Projects\GameSaver\GameSaverApp\Libraries\glm-0.9.9.8\glm;D:\Visual Studio 2022 Projects\GameSaver\GameSaverApp\Libraries\glfw-3.3.8.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\VulkanSDK\1.3.236.0\Lib;D:\Visual Studio 2022 Projects\GameSaver\GameSaverApp\GameSaverApp\Libraries\glfw-3.3.8.bin.WIN64\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\VulkanSDK\1.3.236.0\Lib;D:\Visual Studio 2022 Projects\GameSaver\GameSaverApp\Libraries\glfw-3.3.8.bin.WIN64\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>vulkan-1.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -122,7 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\VulkanSDK\1.3.236.0\Include;D:\Visual Studio 2022 Projects\GameSaver\GameSaverApp\GameSaverApp\Libraries\glm-0.9.9.8\glm;D:\Visual Studio 2022 Projects\GameSaver\GameSaverApp\GameSaverApp\Libraries\glfw-3.3.8.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\VulkanSDK\1.3.236.0\Include;D:\Visual Studio 2022 Projects\GameSaver\GameSaverApp\Libraries\glm-0.9.9.8\glm;D:\Visual Studio 2022 Projects\GameSaver\GameSaverApp\Libraries\glfw-3.3.8.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -130,21 +130,10 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\VulkanSDK\1.3.236.0\Lib;D:\Visual Studio 2022 Projects\GameSaver\GameSaverApp\GameSaverApp\Libraries\glfw-3.3.8.bin.WIN64\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\VulkanSDK\1.3.236.0\Lib;D:\Visual Studio 2022 Projects\GameSaver\GameSaverApp\Libraries\glfw-3.3.8.bin.WIN64\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>vulkan-1.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="gs_app.cpp" />
-    <ClCompile Include="gs_pipeline.cpp" />
-    <ClCompile Include="gs_window.cpp" />
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="gs_app.h" />
-    <ClInclude Include="gs_pipeline.h" />
-    <ClInclude Include="gs_window.h" />
-  </ItemGroup>
   <ItemGroup>
     <None Include="compile.bat" />
   </ItemGroup>
@@ -161,6 +150,19 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\gs_app.h" />
+    <ClInclude Include="src\gs_device.h" />
+    <ClInclude Include="src\gs_pipeline.h" />
+    <ClInclude Include="src\gs_window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\gs_app.cpp" />
+    <ClCompile Include="src\gs_device.cpp" />
+    <ClCompile Include="src\gs_pipeline.cpp" />
+    <ClCompile Include="src\gs_window.cpp" />
+    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

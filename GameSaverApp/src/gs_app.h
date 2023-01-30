@@ -2,10 +2,11 @@
 
 #include "gs_window.h"
 #include "gs_pipeline.h"
+#include "gs_device.h"
 
 namespace md
 {
-	class GsApp
+	class GSApp
 	{
 
 	public:
@@ -16,7 +17,7 @@ namespace md
 
 	private:
 		GSWindow gsWindow{WIDTH, HEIGHT, "Game Saver"};
-		GSPipeline gsPipeline{ "Shaders/VertexShader.spv", "Shaders/PixelShader.spv" };
-
+		GSDevice gsDevice{ gsWindow };
+		GSPipeline gsPipeline{gsDevice, "Shaders/VertexShader.spv", "Shaders/PixelShader.spv", GSPipeline::defaultPipelineConfigInfo(WIDTH, HEIGHT)};
 	};
 }

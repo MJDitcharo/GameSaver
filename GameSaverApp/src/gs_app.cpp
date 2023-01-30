@@ -2,7 +2,7 @@
 
 namespace md
 {
-	void GsApp::run()
+	void GSApp::run()
 	{
 		while (!gsWindow.shouldClose())
 		{

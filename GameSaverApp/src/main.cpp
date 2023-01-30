@@ -7,7 +7,7 @@
 
 int main()
 {
-	md::GsApp app{};
+	md::GSApp app{};
 
 	try
 	{
