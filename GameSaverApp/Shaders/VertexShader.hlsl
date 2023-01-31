@@ -1,7 +1,8 @@
 
 
 
-float4 main( float4 pos : POSITION ) : SV_POSITION
+
+float4 main(float2 input : POSITION) : SV_POSITION
 {
-	return pos;
+    return float4(input, 0, 1);
 }

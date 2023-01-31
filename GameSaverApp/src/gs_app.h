@@ -1,9 +1,10 @@
 #pragma once
 
-#include "gs_window.h"
-#include "gs_pipeline.h"
 #include "gs_device.h"
+#include "gs_pipeline.h"
 #include "gs_swap_chain.h"
+#include "gs_window.h"
+#include "gs_model.h"
 
 // std
 #include <memory>
@@ -27,6 +28,7 @@ namespace md
 		void run();
 
 	private:
+		void loadModels();
 		void createPipelineLayout();
 		void createPipeline();
 		void createCommandBuffers();
@@ -38,5 +40,6 @@ namespace md
 		std::unique_ptr<GSPipeline> gsPipeline;
 		VkPipelineLayout pipelineLayout;
 		std::vector<VkCommandBuffer> commandBuffers;
+		std::unique_ptr<GSModel> gsModel;
 	};
 }

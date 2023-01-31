@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClInclude Include="src\gs_app.h" />
     <ClInclude Include="src\gs_device.h" />
+    <ClInclude Include="src\gs_model.h" />
     <ClInclude Include="src\gs_pipeline.h" />
     <ClInclude Include="src\gs_swap_chain.h" />
     <ClInclude Include="src\gs_window.h" />
@@ -161,6 +162,7 @@
   <ItemGroup>
     <ClCompile Include="src\gs_app.cpp" />
     <ClCompile Include="src\gs_device.cpp" />
+    <ClCompile Include="src\gs_model.cpp" />
     <ClCompile Include="src\gs_pipeline.cpp" />
     <ClCompile Include="src\gs_swap_chain.cpp" />
     <ClCompile Include="src\gs_window.cpp" />

@@ -10,6 +10,7 @@ namespace md
 
 	GSApp::GSApp()
 	{
+		loadModels();
 		createPipelineLayout();
 		createPipeline();
 		createCommandBuffers();
@@ -29,7 +30,19 @@ namespace md
 		vkDeviceWaitIdle(gsDevice.device());
 	}
 
-	void md::GSApp::createPipelineLayout()
+	void GSApp::loadModels()
+	{
+		std::vector<GSModel::Vertex> vertices
+		{
+			{{0.0f, -0.5f}},
+			{{0.5f, 0.5f}},
+			{{-0.5f, 0.5f}}
+		};
+
+		gsModel = std::make_unique<GSModel>(gsDevice, vertices);
+	}
+
+	void GSApp::createPipelineLayout()
 	{
 		VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
 		pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
@@ -41,7 +54,7 @@ namespace md
 			throw std::runtime_error("failed to create pipeline layout");
 	}
 
-	void md::GSApp::createPipeline()
+	void GSApp::createPipeline()
 	{
 		auto pipelineConfig = GSPipeline::defaultPipelineConfigInfo(gsSwapChain.width(), gsSwapChain.height());
 		pipelineConfig.renderPass = gsSwapChain.getRenderPass();
@@ -49,7 +62,7 @@ namespace md
 		gsPipeline = std::make_unique<GSPipeline>(gsDevice, "Shaders/VertexShader.spv", "Shaders/PixelShader.spv", pipelineConfig);
 	}
 
-	void md::GSApp::createCommandBuffers()
+	void GSApp::createCommandBuffers()
 	{
 		commandBuffers.resize(gsSwapChain.imageCount());
 
@@ -89,7 +102,8 @@ namespace md
 			vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
 			gsPipeline->bind(commandBuffers[i]);
-			vkCmdDraw(commandBuffers[i], 3, 1, 0, 0);
+			gsModel->bind(commandBuffers[i]);
+			gsModel->draw(commandBuffers[i]);
 
 			vkCmdEndRenderPass(commandBuffers[i]);
 			if (vkEndCommandBuffer(commandBuffers[i]) != VK_SUCCESS)
@@ -98,7 +112,7 @@ namespace md
 
 	}
 
-	void md::GSApp::drawFrame()
+	void GSApp::drawFrame()
 	{
 		uint32_t imageIndex;
 		auto result = gsSwapChain.acquireNextImage(&imageIndex);
