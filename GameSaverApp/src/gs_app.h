@@ -32,11 +32,15 @@ namespace md
 		void createPipelineLayout();
 		void createPipeline();
 		void createCommandBuffers();
+		void freeCommandBuffers();
 		void drawFrame();
+		void recreateSwapChain();
+		void recordCommandBuffer(int imageIndex);
+
 
 		GSWindow gsWindow{ WIDTH, HEIGHT, "Game Saver" };
 		GSDevice gsDevice{ gsWindow };
-		GSSwapChain gsSwapChain{ gsDevice, gsWindow.getExtent() };
+		std::unique_ptr<GSSwapChain> gsSwapChain;
 		std::unique_ptr<GSPipeline> gsPipeline;
 		VkPipelineLayout pipelineLayout;
 		std::vector<VkCommandBuffer> commandBuffers;
