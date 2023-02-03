@@ -11,12 +11,20 @@ struct VSOutput
     [[vk::location(0)]] float3 Color : COLOR0;
 };
 
+[[vk::push_constant]]
+cbuffer push
+{
+    float2 offset;
+    float3 color;
+};
+
+
 VSOutput main(VSInput input : POSITION) : SV_POSITION
 {
     VSOutput output = (VSOutput) 0;
     
-    output.Color = input.color;
-    output.Pos = float4(input.position.xy, 0, 1);
+    output.Color = color;
+    output.Pos = float4(input.position.xy + offset, 0, 1);
     
     return output;
 

@@ -1,5 +1,9 @@
 #include "gs_app.h"
 
+// libs
+#define GLM_FORCE_RADIANS
+#define GLM_FORCE_DEPTH_ZERO_TO_ONE
+#include <glm/glm.hpp>
 
 // std
 #include <stdexcept>
@@ -7,6 +11,13 @@
 
 namespace md
 {
+
+	struct SimplePushConstantData
+	{
+		glm::vec2 offset;
+		alignas(16) glm::vec3 color;
+	};
+
 
 	GSApp::GSApp()
 	{
@@ -44,20 +55,25 @@ namespace md
 
 	void GSApp::createPipelineLayout()
 	{
+		VkPushConstantRange pushConstantRange{};
+		pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
+		pushConstantRange.offset = 0;
+		pushConstantRange.size = sizeof(SimplePushConstantData);
+
+
 		VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
 		pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
 		pipelineLayoutInfo.setLayoutCount = 0;
 		pipelineLayoutInfo.pSetLayouts = nullptr;
-		pipelineLayoutInfo.pushConstantRangeCount = 0;
-		pipelineLayoutInfo.pPushConstantRanges = nullptr;
+		pipelineLayoutInfo.pushConstantRangeCount = 1;
+		pipelineLayoutInfo.pPushConstantRanges = &pushConstantRange;
 		if (vkCreatePipelineLayout(gsDevice.device(), &pipelineLayoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS)
 			throw std::runtime_error("failed to create pipeline layout");
 	}
 
 	void GSApp::createPipeline()
 	{
-		assert(gsSwapChain != nullptr && "Cannot create pipeline before swap chain");
-		assert(gsSwapChain != nullptr && "Cannot create pipeline before swap chain");
+		assert(gsSwapChain != nullptr && "Cannot create swapchain before pipeline");
 
 		PipelineConfigInfo pipelineConfig{};
 		GSPipeline::defaultPipelineConfigInfo(pipelineConfig);
@@ -111,7 +127,7 @@ namespace md
 	void GSApp::freeCommandBuffers()
 	{
 		vkFreeCommandBuffers(
-			gsDevice.device(), 
+			gsDevice.device(),
 			gsDevice.getCommandPool(),
 			static_cast<uint32_t>(commandBuffers.size()),
 			commandBuffers.data());
@@ -137,7 +153,7 @@ namespace md
 		renderPassInfo.renderArea.extent = gsSwapChain->getSwapChainExtent();
 
 		std::array<VkClearValue, 2> clearValues{};
-		clearValues[0].color = { 0.1f, 0.1f,0.1f ,1.0f };
+		clearValues[0].color = { 0.01f, 0.01f, 0.01f, 1.0f };
 		clearValues[1].depthStencil = { 1.0f, 0 };
 		renderPassInfo.clearValueCount = static_cast<uint32_t>(clearValues.size());
 		renderPassInfo.pClearValues = clearValues.data();
@@ -159,7 +175,17 @@ namespace md
 
 		gsPipeline->bind(commandBuffers[imageIndex]);
 		gsModel->bind(commandBuffers[imageIndex]);
-		gsModel->draw(commandBuffers[imageIndex]);
+
+		for (int i = 0; i < 4; i++)
+		{
+			SimplePushConstantData push{};
+			push.offset = { 0.0f, -0.4f + i * 0.25f };
+			push.color = { 0.0f, 0.0f, 0.2f + 0.2f * i };
+
+			vkCmdPushConstants(commandBuffers[imageIndex], pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(SimplePushConstantData), &push);
+			gsModel->draw(commandBuffers[imageIndex]);
+		}
+
 
 		vkCmdEndRenderPass(commandBuffers[imageIndex]);
 		if (vkEndCommandBuffer(commandBuffers[imageIndex]) != VK_SUCCESS)
